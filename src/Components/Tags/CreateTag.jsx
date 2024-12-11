@@ -11,8 +11,8 @@ const CreateTag = () => {
   const [isLoading, setIsLoading] = useState(false); // For loading state
   const [isModalOpen, setIsModalOpen] = useState(false); // For controlling modal visibility
 
-  const token = 
-  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY3NDc4NDgxZjY0ZWQzNmU4MzA0NmE3ZiIsInR5cGUiOiJBZG1pbiIsImVtYWlsIjoiYWRtaW5AbWVsZGluLmNvIiwiaWF0IjoxNzMzODQyNzQ4LCJleHAiOjE3MzM5MjkxNDh9.PWhyDUD4HaT2nqSA5SifraTCupxxBVOBIOyXJyq1H9g";
+  const token =   "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY3NDc4NDgxZjY0ZWQzNmU4MzA0NmE3ZiIsInR5cGUiOiJBZG1pbiIsImVtYWlsIjoiYWRtaW5AbWVsZGluLmNvIiwiaWF0IjoxNzMzOTExNzk1LCJleHAiOjE3MzM5OTgxOTV9.FjwWFuMgVk3X_U2TJqasVikDQh8J3mfeizZKbU7PKSw";
+
 
   useEffect(() => {
     const fetchTags = async () => {

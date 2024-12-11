@@ -13,7 +13,7 @@ const LeadDetails = () => {
   const [extraInfo, setExtraInfo] = useState(null);
   const [interNotes, setInterNotes] = useState([]);
   const token =
-    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY3NDc4NDgxZjY0ZWQzNmU4MzA0NmE3ZiIsInR5cGUiOiJBZG1pbiIsImVtYWlsIjoiYWRtaW5AbWVsZGluLmNvIiwiaWF0IjoxNzMzODQyNzQ4LCJleHAiOjE3MzM5MjkxNDh9.PWhyDUD4HaT2nqSA5SifraTCupxxBVOBIOyXJyq1H9g";
+  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY3NDc4NDgxZjY0ZWQzNmU4MzA0NmE3ZiIsInR5cGUiOiJBZG1pbiIsImVtYWlsIjoiYWRtaW5AbWVsZGluLmNvIiwiaWF0IjoxNzMzOTExNzk1LCJleHAiOjE3MzM5OTgxOTV9.FjwWFuMgVk3X_U2TJqasVikDQh8J3mfeizZKbU7PKSw";
 
   useEffect(() => {
     if (!leadId) {
@@ -41,13 +41,16 @@ const LeadDetails = () => {
           zipCode: res.data.data.zipCode,
           website: res.data.data.website,
         });
-        setInterNotes(res.data.data.interNotes || []);
+        setInterNotes(res.data.data.internalNotes || []);
+        console.log(res.data.data.internalNotes)
       } catch (err) {
         setError(err.response?.data?.message || "Failed to fetch lead details");
       } finally {
         setLoading(false);
       }
     };
+
+ 
 
     const fetchActivities = async () => {
       try {
@@ -60,7 +63,7 @@ const LeadDetails = () => {
             },
           }
         );
-        setActivities(res.data.activities);
+        setActivities(res.data.activities || {});
       } catch (err) {
         console.error("Failed to fetch activities:", err);
       } finally {
@@ -72,6 +75,35 @@ const LeadDetails = () => {
     fetchActivities();
   }, [leadId]);
 
+  const renderActivities = (activities) => {
+    const dates = Object.keys(activities);
+
+    if (dates.length === 0) {
+      return <p className="text-white">No activities found</p>;
+    }
+
+    return (
+      <ul className="space-y-4 flex-col-reverse">
+        {dates.map((date) => (
+          <li key={date} className="mb-4">
+            <h3 className="font-bold  mb-2">{date}</h3>
+            <ul className="space-y-2">
+              {activities[date].map((activity, index) => (
+                <li
+                  key={index}
+                  className="rounded p-3 text-white"
+                >
+                  <p className="font-semibold">{activity.details}</p>
+                  <p className="text-sm ">Time: {activity.time}</p>
+                </li>
+              ))}
+            </ul>
+          </li>
+        ))}
+      </ul>
+    );
+  };
+
   const renderExtraInfo = (extraInfo) => {
     const displayFields = {
       companyName: "Company Name",
@@ -81,39 +113,59 @@ const LeadDetails = () => {
       zipCode: "Zip Code",
       website: "Website",
     };
-  
+
     return (
       <div className="grid grid-cols-2 gap-4">
         {Object.entries(displayFields).map(([key, label]) => (
           <div key={key} className="flex flex-col">
             <strong>{label}:</strong>
-            <span>{extraInfo && extraInfo[key] ? extraInfo[key] : "Not Available"}</span>
+            <span>
+              {extraInfo && extraInfo[key] ? extraInfo[key] : "Not Available"}
+            </span>
           </div>
         ))}
       </div>
     );
   };
-  
 
-  const renderInterNotes = (interNotes) => (
-    <ul>
-      {interNotes.map((note, index) => (
-        <li key={index}>
-          <strong>Note {index + 1}: </strong>
-          {note || "No details available for this note."}
-        </li>
-      ))}
-    </ul>
-  );
+  const renderInterNotes = (interNotes) => {
+    if (Array.isArray(interNotes)) {
+      // If it's an array, map through and render each note
+      return (
+        <ul>
+          {interNotes.map((note, index) => (
+            <li key={index}>
+              <strong>Note {index + 1}: </strong>
+              {note || "No details available for this note."}
+            </li>
+          ))}
+        </ul>
+      );
+    } else {
+      // If it's a string, render it as a single note
+      return (
+        <p>
+          
+          {interNotes || "No details available for this note."}
+        </p>
+      );
+    }
+  };
+  
 
   return (
     <div className="min-h-screen text-orange-600 flex">
       <main className="flex-1 p-6">
         <header className="shadow mb-6 p-4 rounded-lg flex items-center justify-between">
-          <button className="font-semibold" onClick={() => window.history.back()}>
+          <button
+            className="font-semibold"
+            onClick={() => window.history.back()}
+          >
             ← Back
           </button>
-          <h1 className="font-bold mx-auto">{lead?.contactName || "Lead Details"}</h1>
+          <h1 className="font-bold mx-auto">
+            {lead?.contactName || "Lead Details"}
+          </h1>
         </header>
 
         <div className="shadow rounded-lg p-6">
@@ -128,7 +180,7 @@ const LeadDetails = () => {
             lead && (
               <div>
                 <nav className="flex mb-6 text-orange-600 border-b">
-                  {["details", "tags", "history"].map((tab) => (
+                  {["details"].map((tab) => (
                     <button
                       key={tab}
                       onClick={() => setActiveTab(tab)}
@@ -156,75 +208,70 @@ const LeadDetails = () => {
                       <p>{lead.expectedRevenue}</p>
                     </div>
                     <div>
-                      <h2 className="font-semibold">Stage</h2>
+                      
                       <p>{lead.stage}</p>
                     </div>
                     <div>
                       <h2 className="font-semibold">Sales Person</h2>
-                      {lead.salesPerson ? <p>{lead.salesPerson.name}</p> : <p>Not Assigned</p>}
+                      {lead.salesPerson ? (
+                        <p>{lead.salesPerson.name}</p>
+                      ) : (
+                        <p>Not Assigned</p>
+                      )}
                     </div>
+                    
+                    <div>
+  <h2 className="font-semibold">Tags</h2>
+  <div>
+    {lead?.tags && lead.tags.length > 0 ? (
+      <div className="flex flex-wrap gap-2">
+        {lead.tags.map((tag, index) => (
+          <span 
+            key={index} 
+            className="bg-gray-600 text-white px-3 py-1 rounded-full text-sm"
+          >
+            {tag}
+          </span>
+        ))}
+      </div>
+    ) : (
+      <p>No tags available</p>
+    )}
+  </div>
+</div>
+
+           
+                    
                   </div>
                 )}
-                {activeTab === "tags" && (
-                  <div>
-                    {lead?.tags && lead.tags.length > 0 ? (
-                      <ul>
-                        {lead.tags.map((tags, index) => (
-                          <li key={index}>{tags}</li>
-                        ))}
-                      </ul>
-                    ) : (
-                      <p>No tags available</p>
-                    )}
-                  </div>
-                )}
-                {activeTab === "history" && (
-                  <div>
-                    {lead?.history && lead.history.length > 0 ? (
-                      <ul>
-                        {lead.history.map((history, index) => (
-                          <li key={index}>{history}</li>
-                        ))}
-                      </ul>
-                    ) : (
-                      <p>No history available</p>
-                    )}
-                  </div>
-                )}
+                
+               
               </div>
             )
           )}
         </div>
 
         <div className="mt-6 p-6 rounded shadow">
-  <h2 className="text-xl text-orange font-semibold">Extra Information</h2>
-  <div className="text-white">
-    {renderExtraInfo(extraInfo)}
-  </div>
-</div>
-
+          <h2 className="text-xl text-orange font-semibold">
+            Extra Information
+          </h2>
+          <div className="text-white">{renderExtraInfo(extraInfo)}</div>
+        </div>
 
         <div className="mt-6 p-6 rounded shadow">
-          <h2 className="text-xl font-semibold">Internal Notes</h2>
-          {renderInterNotes(interNotes)}
-        </div>
+  <h2 className="text-xl font-semibold">Internal Notes</h2>
+  <div className="text-white" >{renderInterNotes(interNotes)}</div>
+  
+</div>
+
       </main>
 
-      <aside className="w-1/4 mt-6 shadow p-4">
-        <h2 className="font-bold text-lg mb-4">Activity Log</h2>
+      <aside className="w-1/4 mt-6 shadow p-4 ">
+        <h2 className="font-bold text-white text-lg mb-4">Activity Log</h2>
         {loadingActivities ? (
-          <p>Loading activities...</p>
-        ) : activities.length > 0 ? (
-          <ul>
-            {activities.map((activity, index) => (
-              <li key={index}>
-                <p>{activity.type}</p>
-                <small>{activity.date}</small>
-              </li>
-            ))}
-          </ul>
+          <p className="text-white">Loading activities...</p>
         ) : (
-          <p className="text-white">No activities found</p>
+          renderActivities(activities)
         )}
       </aside>
     </div>
