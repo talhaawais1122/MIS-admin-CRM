@@ -72,27 +72,28 @@ const LeadDetails = () => {
     fetchActivities();
   }, [leadId]);
 
-  const renderExtraInfo = (extraInfo) => { 
+  const renderExtraInfo = (extraInfo) => {
     const displayFields = {
-      companyName: "Company Name ",
+      companyName: "Company Name",
       jobPosition: "Job Position",
       companyMobileNumber: "Company Mobile Number",
       address: "Address",
       zipCode: "Zip Code",
       website: "Website",
     };
-
+  
     return (
-      <ul>
+      <div className="grid grid-cols-2 gap-4">
         {Object.entries(displayFields).map(([key, label]) => (
-          <li key={key}>
-            <strong>{label}: </strong>
-            {extraInfo && extraInfo[key] ? extraInfo[key] : "Not Available"}
-          </li>
+          <div key={key} className="flex flex-col">
+            <strong>{label}:</strong>
+            <span>{extraInfo && extraInfo[key] ? extraInfo[key] : "Not Available"}</span>
+          </div>
         ))}
-      </ul>
+      </div>
     );
   };
+  
 
   const renderInterNotes = (interNotes) => (
     <ul>
@@ -195,10 +196,13 @@ const LeadDetails = () => {
           )}
         </div>
 
-        <div className="mt-6 p-6 rounded text-white shadow">
-          <h2 className="text-xl text-orange font-semibold">Extra Information</h2>
-          {renderExtraInfo(extraInfo )}
-        </div>
+        <div className="mt-6 p-6 rounded shadow">
+  <h2 className="text-xl text-orange font-semibold">Extra Information</h2>
+  <div className="text-white">
+    {renderExtraInfo(extraInfo)}
+  </div>
+</div>
+
 
         <div className="mt-6 p-6 rounded shadow">
           <h2 className="text-xl font-semibold">Internal Notes</h2>
@@ -220,7 +224,7 @@ const LeadDetails = () => {
             ))}
           </ul>
         ) : (
-          <p>No activities found</p>
+          <p className="text-white">No activities found</p>
         )}
       </aside>
     </div>

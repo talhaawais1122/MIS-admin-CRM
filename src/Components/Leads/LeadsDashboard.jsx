@@ -8,9 +8,11 @@ import Campaign from "../Campaign/GetAllCampaigns/GetAllCampaigns";  // Ensure y
 function LeadsDashboard() {
   const { handleLeadId } = useContext(UserContext);
   const [leads, setLeads] = useState({
-    Hot: [],
-    Warm: [],
     Cold: [],
+     Warm: [],
+    Hot: [],
+   
+   
     Won: [],
     Lost: [],
   });
@@ -26,7 +28,7 @@ function LeadsDashboard() {
   const [activeTab, setActiveTab] = useState("campaign"); // New state for active tab
   const navigate = useNavigate();
   const token =
-"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY3NDc4NDgxZjY0ZWQzNmU4MzA0NmE3ZiIsInR5cGUiOiJBZG1pbiIsImVtYWlsIjoiYWRtaW5AbWVsZGluLmNvIiwiaWF0IjoxNzMzODQyNzQ4LCJleHAiOjE3MzM5MjkxNDh9.PWhyDUD4HaT2nqSA5SifraTCupxxBVOBIOyXJyq1H9g"
+  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY3NDc4NDgxZjY0ZWQzNmU4MzA0NmE3ZiIsInR5cGUiOiJBZG1pbiIsImVtYWlsIjoiYWRtaW5AbWVsZGluLmNvIiwiaWF0IjoxNzMzOTExNzk1LCJleHAiOjE3MzM5OTgxOTV9.FjwWFuMgVk3X_U2TJqasVikDQh8J3mfeizZKbU7PKSw"
   const fetchLeads = async () => {
     setLoading(true);
     try {
@@ -48,18 +50,20 @@ function LeadsDashboard() {
       console.log
 
       const categorizedLeads = {
-        Hot: {
-          leads: res.data.data.Hot?.leads || [],
-          totalRevenue: res.data.data.Hot?.totalExpectedRevenue || 0,
+        Cold: {
+          leads: res.data.data.Cold?.leads || [],
+          totalRevenue: res.data.data.Cold?.totalExpectedRevenue || 0,
         },
         Warm: {
           leads: res.data.data.Warm?.leads || [],
           totalRevenue: res.data.data.Warm?.totalExpectedRevenue || 0,
         },
-        Cold: {
-          leads: res.data.data.Cold?.leads || [],
-          totalRevenue: res.data.data.Cold?.totalExpectedRevenue || 0,
+        Hot: {
+          leads: res.data.data.Hot?.leads || [],
+          totalRevenue: res.data.data.Hot?.totalExpectedRevenue || 0,
         },
+      
+       
         Won: {
           leads: res.data.data.Won?.leads || [],
           totalRevenue: res.data.data.Won?.totalExpectedRevenue || 0,
@@ -99,9 +103,11 @@ function LeadsDashboard() {
       selectedLeads.length > 0
         ? selectedLeads
         : [
+          
+          ...leads.Cold.leads,
+          ...leads.Warm.leads,
             ...leads.Hot.leads,
-            ...leads.Warm.leads,
-            ...leads.Cold.leads,
+
             ...leads.Won.leads,
             ...leads.Lost.leads,
           ].map((lead) => lead.id);
@@ -235,18 +241,20 @@ function LeadsDashboard() {
           <button
             onClick={downloadLeads}
             className={`bg-orange-500 text-white px-4 py-2 rounded-3xl shadow ${
-              leads.Hot.length === 0 &&
-              leads.Warm.length === 0 &&
               leads.Cold.length === 0 &&
+              leads.Warm.length === 0 &&
+           
+              leads.Hot.length === 0 &&
               leads.Won.length === 0 &&
               leads.Lost.length === 0
                 ? "opacity-50 cursor-not-allowed"
                 : ""
             }`}
             disabled={
-              leads.Hot.length === 0 &&
+                leads.Cold.length === 0 &&
               leads.Warm.length === 0 &&
-              leads.Cold.length === 0 &&
+            
+              leads.Hot.length === 0 &&
               leads.Won.length === 0 &&
               leads.Lost.length === 0
             }
@@ -263,9 +271,11 @@ function LeadsDashboard() {
         <p className="text-center">Loading...</p>
       ) : (
         <div className="flex space-x-4">
+            {renderColumn("Cold", leads.Cold, "blue")}
+            {renderColumn("Warm", leads.Warm, "yellow")}
           {renderColumn("Hot", leads.Hot, "red")}
-          {renderColumn("Warm", leads.Warm, "yellow")}
-          {renderColumn("Cold", leads.Cold, "blue")}
+        
+        
           {renderColumn("Won", leads.Won, "green")}
           {renderColumn("Lost", leads.Lost, "gray")}
         </div>

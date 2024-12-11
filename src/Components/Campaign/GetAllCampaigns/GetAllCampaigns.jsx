@@ -10,7 +10,8 @@ const GetAllCampaigns = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
  // Replace with your token
  const token =
-"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImFkbWluQG1lbGRpbi5jbyIsImlhdCI6MTczMzg0MTgxOCwiZXhwIjoxNzMzODQ5MDE4fQ.v0R-fdf3aMhJjWZDWuifUDfbqjheNFbgGQjUu6FZWoU"  // Fetch all campaigns
+ "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY3NDc4NDgxZjY0ZWQzNmU4MzA0NmE3ZiIsInR5cGUiOiJBZG1pbiIsImVtYWlsIjoiYWRtaW5AbWVsZGluLmNvIiwiaWF0IjoxNzMzODQyNzQ4LCJleHAiOjE3MzM5MjkxNDh9.PWhyDUD4HaT2nqSA5SifraTCupxxBVOBIOyXJyq1H9g";
+
   useEffect(() => {
     const fetchCampaigns = async () => {
       try {
