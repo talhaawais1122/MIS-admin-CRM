@@ -2,17 +2,16 @@ import React, { useEffect, useState, useContext } from "react";
 import axios from "axios";
 import UserContext from "../../ContextApi/UserContext";
 import { useNavigate } from "react-router-dom";
-import Tags from "../Tags/CreateTag";  // Ensure you have the correct path
-import Campaign from "../Campaign/GetAllCampaigns/GetAllCampaigns";  // Ensure you have the correct path
+import Tags from "../Tags/CreateTag"; // Ensure you have the correct path
+import Campaign from "../Campaign/GetAllCampaigns/GetAllCampaigns"; // Ensure you have the correct path
 
 function LeadsDashboard() {
   const { handleLeadId } = useContext(UserContext);
   const [leads, setLeads] = useState({
     Cold: [],
-     Warm: [],
+    Warm: [],
     Hot: [],
-   
-   
+
     Won: [],
     Lost: [],
   });
@@ -28,7 +27,7 @@ function LeadsDashboard() {
   const [activeTab, setActiveTab] = useState("campaign"); // New state for active tab
   const navigate = useNavigate();
   const token =
-  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY3NDc4NDgxZjY0ZWQzNmU4MzA0NmE3ZiIsInR5cGUiOiJBZG1pbiIsImVtYWlsIjoiYWRtaW5AbWVsZGluLmNvIiwiaWF0IjoxNzMzOTExNzk1LCJleHAiOjE3MzM5OTgxOTV9.FjwWFuMgVk3X_U2TJqasVikDQh8J3mfeizZKbU7PKSw"
+    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY3NDc4NDgxZjY0ZWQzNmU4MzA0NmE3ZiIsInR5cGUiOiJBZG1pbiIsImVtYWlsIjoiYWRtaW5AbWVsZGluLmNvIiwiaWF0IjoxNzMzOTExNzk1LCJleHAiOjE3MzM5OTgxOTV9.FjwWFuMgVk3X_U2TJqasVikDQh8J3mfeizZKbU7PKSw";
   const fetchLeads = async () => {
     setLoading(true);
     try {
@@ -47,7 +46,7 @@ function LeadsDashboard() {
         },
       });
 
-      console.log
+      console.log;
 
       const categorizedLeads = {
         Cold: {
@@ -62,8 +61,7 @@ function LeadsDashboard() {
           leads: res.data.data.Hot?.leads || [],
           totalRevenue: res.data.data.Hot?.totalExpectedRevenue || 0,
         },
-      
-       
+
         Won: {
           leads: res.data.data.Won?.leads || [],
           totalRevenue: res.data.data.Won?.totalExpectedRevenue || 0,
@@ -103,9 +101,8 @@ function LeadsDashboard() {
       selectedLeads.length > 0
         ? selectedLeads
         : [
-          
-          ...leads.Cold.leads,
-          ...leads.Warm.leads,
+            ...leads.Cold.leads,
+            ...leads.Warm.leads,
             ...leads.Hot.leads,
 
             ...leads.Won.leads,
@@ -147,7 +144,11 @@ function LeadsDashboard() {
     fetchLeads();
   }, [filters]);
 
-  const renderColumn = (title, leadsData = { leads: [], totalRevenue: 0 }, color) => (
+  const renderColumn = (
+    title,
+    leadsData = { leads: [], totalRevenue: 0 },
+    color
+  ) => (
     <div className={`w-1/5 p-4 rounded-3xl shadow-md bg-${color}-600`}>
       <h2 className="text-lg font-bold mb-4 text-center text-white">{title}</h2>
       <p className="text-center text-white mb-4">
@@ -243,7 +244,6 @@ function LeadsDashboard() {
             className={`bg-orange-500 text-white px-4 py-2 rounded-3xl shadow ${
               leads.Cold.length === 0 &&
               leads.Warm.length === 0 &&
-           
               leads.Hot.length === 0 &&
               leads.Won.length === 0 &&
               leads.Lost.length === 0
@@ -251,9 +251,8 @@ function LeadsDashboard() {
                 : ""
             }`}
             disabled={
-                leads.Cold.length === 0 &&
+              leads.Cold.length === 0 &&
               leads.Warm.length === 0 &&
-            
               leads.Hot.length === 0 &&
               leads.Won.length === 0 &&
               leads.Lost.length === 0
@@ -264,25 +263,19 @@ function LeadsDashboard() {
         </div>
       </div>
 
-    
-     
-
       {loading ? (
         <p className="text-center">Loading...</p>
       ) : (
         <div className="flex space-x-4">
-            {renderColumn("Cold", leads.Cold, "blue")}
-            {renderColumn("Warm", leads.Warm, "yellow")}
+          {renderColumn("Cold", leads.Cold, "blue")}
+          {renderColumn("Warm", leads.Warm, "yellow")}
           {renderColumn("Hot", leads.Hot, "red")}
-        
-        
           {renderColumn("Won", leads.Won, "green")}
           {renderColumn("Lost", leads.Lost, "gray")}
         </div>
       )}
 
-
-<div className="flex justify-left space-x-4 mb-6">
+      <div className="flex justify-left space-x-4 mb-6">
         <button
           onClick={() => setActiveTab("campaign")}
           className={`${
@@ -312,7 +305,7 @@ function LeadsDashboard() {
       {activeTab === "tags" && (
         <div className="mt-8">
           <h2 className="text-2xl font-bold text-center mb-4">Tags</h2>
-          <Tags /> 
+          <Tags />
         </div>
       )}
     </div>
