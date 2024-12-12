@@ -12,8 +12,7 @@ const LeadDetails = () => {
   const [loadingActivities, setLoadingActivities] = useState(false);
   const [extraInfo, setExtraInfo] = useState(null);
   const [interNotes, setInterNotes] = useState([]);
-  const token =
-  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY3NDc4NDgxZjY0ZWQzNmU4MzA0NmE3ZiIsInR5cGUiOiJBZG1pbiIsImVtYWlsIjoiYWRtaW5AbWVsZGluLmNvIiwiaWF0IjoxNzMzOTExNzk1LCJleHAiOjE3MzM5OTgxOTV9.FjwWFuMgVk3X_U2TJqasVikDQh8J3mfeizZKbU7PKSw";
+  const token ="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY3NDc4NDgxZjY0ZWQzNmU4MzA0NmE3ZiIsInR5cGUiOiJBZG1pbiIsImVtYWlsIjoiYWRtaW5AbWVsZGluLmNvIiwiaWF0IjoxNzM0MDE2Mzc2LCJleHAiOjE3MzQxMDI3NzZ9.ADeHIe91A0DQWGCDjnVhlypveoeJS-LGniUGeqOEjms"
 
   useEffect(() => {
     if (!leadId) {

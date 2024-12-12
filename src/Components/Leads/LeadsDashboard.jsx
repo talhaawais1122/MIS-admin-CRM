@@ -26,8 +26,8 @@ function LeadsDashboard() {
   const [loading, setLoading] = useState(true);
   const [activeTab, setActiveTab] = useState("campaign"); // New state for active tab
   const navigate = useNavigate();
-  const token =
-    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY3NDc4NDgxZjY0ZWQzNmU4MzA0NmE3ZiIsInR5cGUiOiJBZG1pbiIsImVtYWlsIjoiYWRtaW5AbWVsZGluLmNvIiwiaWF0IjoxNzMzOTExNzk1LCJleHAiOjE3MzM5OTgxOTV9.FjwWFuMgVk3X_U2TJqasVikDQh8J3mfeizZKbU7PKSw";
+  const token ="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY3NDc4NDgxZjY0ZWQzNmU4MzA0NmE3ZiIsInR5cGUiOiJBZG1pbiIsImVtYWlsIjoiYWRtaW5AbWVsZGluLmNvIiwiaWF0IjoxNzM0MDE2Mzc2LCJleHAiOjE3MzQxMDI3NzZ9.ADeHIe91A0DQWGCDjnVhlypveoeJS-LGniUGeqOEjms"
+
   const fetchLeads = async () => {
     setLoading(true);
     try {
@@ -267,11 +267,11 @@ function LeadsDashboard() {
         <p className="text-center">Loading...</p>
       ) : (
         <div className="flex space-x-4">
-          {renderColumn("Cold", leads.Cold, "blue")}
-          {renderColumn("Warm", leads.Warm, "yellow")}
-          {renderColumn("Hot", leads.Hot, "red")}
-          {renderColumn("Won", leads.Won, "green")}
-          {renderColumn("Lost", leads.Lost, "gray")}
+          {renderColumn("Cold", leads.Cold, )}
+          {renderColumn("Warm", leads.Warm, )}
+          {renderColumn("Hot", leads.Hot, )}
+          {renderColumn("Won", leads.Won, )}
+          {renderColumn("Lost", leads.Lost,)}
         </div>
       )}
 
